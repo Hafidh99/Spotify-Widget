@@ -1,2 +1,12 @@
+[project]
+name = "spotify-widget"
+version = "0.1.0"
+description = "Spotify Now Playing Widget for GitHub Profile"
+dependencies = [
+    "flask",
+    "requests",
+    "python-dotenv"
+]
+
 [tool.vercel]
 entrypoint = "api.orchestrator:app"
