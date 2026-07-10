@@ -5,7 +5,9 @@ description = "Spotify Now Playing Widget for GitHub Profile"
 dependencies = [
     "flask",
     "requests",
-    "python-dotenv"
+    "python-dotenv",
+    "colorthief",
+    "Pillow"
 ]
 
 [tool.vercel]
