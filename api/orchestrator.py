@@ -21,7 +21,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from colorthief import ColorThief
 from flask import Flask, Response, render_template, request, redirect
 
-from .config import (
+from api.config import (
     ColorPalette,
     compact_svg_config,
     svg_config,
@@ -29,7 +29,7 @@ from .config import (
     validate_background_type,
     validate_hex_color,
 )
-from .exceptions import (
+from api.exceptions import (
     ImageProcessingError,
     MusicWidgetError,
     ServiceNotConfiguredError,
@@ -549,7 +549,7 @@ def get_active_service() -> Tuple[str, Any]:
         ServiceNotConfiguredError: If no service is configured
     """
     # Import here to avoid circular imports
-    from . import lastfm, spotify
+    from api import lastfm, spotify
 
     if spotify.is_configured():
         return ("spotify", spotify)
@@ -583,7 +583,7 @@ def make_error_svg(message: str, status_code: int = 500) -> Response:
         </text>
     </svg>"""
 
-    resp = Response(error_svg, mimetype="image/svg+xml", status=status_code)
+    resp = Response(error_svg, mimetype="image/svg+xml", status=200)
     resp.headers["Cache-Control"] = "no-cache"
     return resp
 
