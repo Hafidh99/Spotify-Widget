@@ -30,7 +30,7 @@
     </style>
 
     <foreignObject width="{{ width }}" height="{{ height }}" x="0" y="0">
-        <div xmlns="http://www.w3.org/1999/xhtml" class="container {% if use_blur_background %}blur-bg{% endif %} {% if blur_is_dark %}blur-dark{% else %}blur-light{% endif %}">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="container {% if not is_playing %}is-paused{% endif %} {% if use_blur_background %}blur-bg{% endif %} {% if blur_is_dark %}blur-dark{% else %}blur-light{% endif %}">
             <style>
                 :root {
                     /* Colors (runtime — from request params + palette extraction) */
@@ -105,6 +105,11 @@
                     background-position: center;
                     filter: blur(var(--blur-amount)) saturate(1.2);
                     transform: scale(1.1);
+                    transition: filter 0.3s ease;
+                }
+
+                .container.is-paused .blur-background {
+                    filter: blur(var(--blur-amount)) saturate(0) grayscale(100%);
                 }
 
                 .blur-overlay {
@@ -270,7 +275,13 @@
                     height: var(--album-size);
                     border-radius: var(--border-radius);
                     object-fit: cover;
-                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.3s ease;
+                }
+
+                .container.is-paused .cover,
+                .container.is-paused .content {
+                    filter: grayscale(100%);
+                    opacity: 0.8;
                 }
 
                 .container.blur-bg .cover {
@@ -328,6 +339,25 @@
                     }
                 }
 
+                .paused-sticker {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%) rotate(-15deg);
+                    color: #ef4444;
+                    border: 3px solid #ef4444;
+                    padding: 4px 10px;
+                    font-size: 14px;
+                    font-weight: 800;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                    border-radius: 4px;
+                    background-color: rgba(255, 255, 255, 0.8);
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                    z-index: 10;
+                    pointer-events: none;
+                }
+
                 {% block theme_styles %}{% endblock %}
             </style>
 
@@ -338,6 +368,9 @@
             <div class="main">
                 <a class="art" href="{{ song_uri }}" target="_blank" title="Open in {{ service_name | default('music app') }}">
                     <img src="data:image/png;base64,{{ image }}" class="cover" alt="Album art" />
+                    {% if not is_playing %}
+                    <div class="paused-sticker">PAUSED</div>
+                    {% endif %}
                 </a>
 
                 <div class="content">
@@ -384,7 +417,7 @@
     </foreignObject>
 
     {# ── Native SVG bars — painted on top of foreignObject, scale as vectors ── #}
-    <g id="bars">
+    <g id="bars" {% if not is_playing %}filter="grayscale(100%)"{% endif %}>
         {{ bar_svg | safe }}
     </g>
 </svg>
