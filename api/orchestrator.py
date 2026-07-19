@@ -505,6 +505,7 @@ def make_svg(
         # Status
         "status": status,
         "show_status": show_status,
+        "is_playing": is_playing,
         # Dimensions & layout (single source of truth from config)
         "width": cfg.width,
         "height": cfg.height,

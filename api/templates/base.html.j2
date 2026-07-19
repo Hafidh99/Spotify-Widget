@@ -16,6 +16,9 @@
             animation-iteration-count: infinite, infinite;
             animation-direction: alternate, normal;
             animation-timing-function: ease-out, linear;
+            {% if not is_playing %}
+            animation-play-state: paused, paused;
+            {% endif %}
         }
 
         @keyframes pulse {
