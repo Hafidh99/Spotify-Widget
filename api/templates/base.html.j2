@@ -165,6 +165,7 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    position: relative;
                 }
 
                 .art:hover .cover {
@@ -344,18 +345,33 @@
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%) rotate(-15deg);
-                    color: #ef4444;
-                    border: 3px solid #ef4444;
-                    padding: 4px 10px;
-                    font-size: 14px;
+                    color: #e9d5ff; /* Light neon purple text */
+                    border: 2px solid #a855f7; /* Neon purple border */
+                    padding: 6px 12px;
+                    border-radius: 6px;
+                    background-color: rgba(10, 10, 15, 0.85); /* Dark background */
+                    box-shadow: 0 0 10px rgba(168, 85, 247, 0.6), inset 0 0 5px rgba(168, 85, 247, 0.4);
+                    text-shadow: 0 0 5px rgba(233, 213, 255, 0.8);
+                    z-index: 10;
+                    pointer-events: none;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    line-height: 1.1;
+                }
+
+                .paused-sticker .main-text {
+                    font-size: 12px;
                     font-weight: 800;
                     text-transform: uppercase;
                     letter-spacing: 2px;
-                    border-radius: 4px;
-                    background-color: rgba(255, 255, 255, 0.8);
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-                    z-index: 10;
-                    pointer-events: none;
+                }
+
+                .paused-sticker .sub-text {
+                    font-size: 8px;
+                    font-weight: 600;
+                    letter-spacing: 1px;
+                    opacity: 0.75;
                 }
 
                 {% block theme_styles %}{% endblock %}
@@ -369,7 +385,10 @@
                 <a class="art" href="{{ song_uri }}" target="_blank" title="Open in {{ service_name | default('music app') }}">
                     <img src="data:image/png;base64,{{ image }}" class="cover" alt="Album art" />
                     {% if not is_playing %}
-                    <div class="paused-sticker">PAUSED</div>
+                    <div class="paused-sticker">
+                        <span class="main-text">RESTRAINED</span>
+                        <span class="sub-text">(paused)</span>
+                    </div>
                     {% endif %}
                 </a>
 
